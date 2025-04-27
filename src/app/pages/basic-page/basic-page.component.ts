@@ -1,5 +1,6 @@
+import { LocaleService, availableLocale } from './../../services/locale.service';
 import { DatePipe, LowerCasePipe, TitleCasePipe, UpperCasePipe } from '@angular/common';
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, inject, LOCALE_ID, signal } from '@angular/core';
 
 @Component({
   selector: 'app-basic-page',
@@ -12,6 +13,9 @@ import { Component, effect, signal } from '@angular/core';
   templateUrl: './basic-page.component.html',
 })
 export default class BasicPageComponent {
+
+  ls = inject(LocaleService);
+  currentLocal = signal(inject(LOCALE_ID));
 
   nameLower = signal('william');
   nameUpper = signal('WILLIAM');
@@ -30,5 +34,9 @@ export default class BasicPageComponent {
     });
 
   });
+
+  changeLocale(locale: availableLocale) {
+    this.ls.changeLocale(locale);
+  }
 
 }
