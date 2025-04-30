@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CardComponent } from "../../components/Card/Card.component";
-import { I18nPluralPipe, I18nSelectPipe } from '@angular/common';
+import { AsyncPipe, I18nPluralPipe, I18nSelectPipe, JsonPipe, KeyValuePipe, SlicePipe, TitleCasePipe } from '@angular/common';
+import { interval, tap } from 'rxjs';
 
 const client1 = {
   name: 'William',
@@ -18,7 +19,7 @@ const client2 = {
 
 @Component({
   selector: 'app-uncommon-page',
-  imports: [CardComponent, I18nSelectPipe, I18nPluralPipe],
+  imports: [CardComponent, I18nSelectPipe, I18nPluralPipe, SlicePipe, JsonPipe, KeyValuePipe, TitleCasePipe, AsyncPipe],
   templateUrl: './uncommon-page.component.html',
 })
 export default class UncommonPageComponent {
@@ -57,5 +58,23 @@ export default class UncommonPageComponent {
   deleteClient() {
     this.clients.update( prev => prev.slice(1) );
   }
+
+  // KeyValue Pipe
+  profile = {
+    name: 'William',
+    age: 36,
+    address: 'Cuscatlan'
+  }
+
+  promiseValue: Promise<String> = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('Tenemos data');
+      console.log('Promesa finalizada')
+    }, 3500);
+  })
+
+  myObservableTime = interval(2000).pipe(
+    tap((value) => console.log('tap', value))
+  )
 
 }
